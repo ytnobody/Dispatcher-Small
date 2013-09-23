@@ -15,7 +15,8 @@ sub match {
     my $i = 0;
     my ($regex, $class, @capture);
     while ($regex = $self->[$i * 2]) {
-        if (@capture = $str =~ $regex) {
+        @capture = $str =~ $regex;
+        if (@capture) {
             return +{ 
                 %{ $self->[$i * 2 + 1] },
                 %+ ? %+ : ( capture => [@capture] ),

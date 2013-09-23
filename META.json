@@ -4,7 +4,7 @@
       "ytnobody <ytnobody@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.6.3, CPAN::Meta::Converter version 2.132140",
+   "generated_by" : "Minilla/v0.6.5, CPAN::Meta::Converter version 2.132510",
    "license" : [
       "perl_5"
    ],
@@ -52,5 +52,16 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/ytnobody/Dispatcher-Small/issues"
+      },
+      "homepage" : "https://github.com/ytnobody/Dispatcher-Small",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/ytnobody/Dispatcher-Small.git",
+         "web" : "https://github.com/ytnobody/Dispatcher-Small"
+      }
+   },
    "version" : "0.01"
 }
