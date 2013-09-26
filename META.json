@@ -52,5 +52,16 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/ytnobody/Dispatcher-Small/issues"
+      },
+      "homepage" : "https://github.com/ytnobody/Dispatcher-Small",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/ytnobody/Dispatcher-Small.git",
+         "web" : "https://github.com/ytnobody/Dispatcher-Small"
+      }
+   },
    "version" : "0.01"
 }

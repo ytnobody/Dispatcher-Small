@@ -7,17 +7,19 @@ our $VERSION = "0.01";
 
 sub new {
     my $class = shift;
-    return bless [ @_ ], $class;
+    return bless +{ @_ }, $class;
 }
 
 sub match {
-    my ($self, $str) = @_;
+    my ($self, $env) = @_;
     my $i = 0;
     my ($regex, $class, @capture);
-    while ($regex = $self->[$i * 2]) {
-        if (@capture = $str =~ $regex) {
+    my $path   = $env->{PATH_INFO} || '/';
+    my $method = $env->{REQUEST_METHOD};
+    while ($regex = $self->{$method}[$i * 2]) {
+        if (@capture = $path =~ $regex) {
             return +{ 
-                %{ $self->[$i * 2 + 1] },
+                %{ $self->{$method}[$i * 2 + 1] },
                 %+ ? %+ : ( capture => [@capture] ),
             };
         }
@@ -38,10 +40,18 @@ Dispatcher::Small - Small dispatcher with Regular-Expression
 
     use Dispatcher::Small;
     my $ds = Dispatcher::Small->new(
-        qr'^/user/(?<id>.+)' => { action => \&user },
-        qr'^/'               => { action => \&root },
+        GET  => [
+            qr'^/user/(?<id>.+)' => { action => \&user },
+            qr'^/'               => { action => \&root },
+        ],
+        POST => [
+            qr'^/user/(?<id>.+)' => { action => \&user_update },
+        ],
     );
-    my $res = $ds->match('/user/oreore'); ### $res = { action => sub {...}, id => 'oreore' }
+    my $res = $ds->match({
+       PATH_INFO      => '/user/oreore', 
+       REQUEST_METHOD => 'GET',
+    }); ### $res = { action => sub {...}, id => 'oreore' }
 
 =head1 DESCRIPTION
 
@@ -56,8 +66,13 @@ Dispatcher::Small requires perl-5.10 or later.
 =head2 new
 
     my %dispatch_rule = (
-        qr'^/user/(?<id>.+)' => \&user,
-        qr'^/'               => \&root,
+        GET => [
+            qr'^/user/(?<id>.+)' => \&user,
+            qr'^/'               => \&root,
+        ],
+        POST => [
+            qr'^/user/(?<id>.+)' => \&user_update,
+        ],
     );
     my $object = Dispatcher::Small->new( %dispatch_rule );
 
@@ -65,9 +80,9 @@ Constructor method.
 
 =head2 match
 
-    my $res = $object->match('/user/oreore');
+    my $res = $object->match($env);
 
-Returns matching result as hashref.
+Returns matching result as hashref. $env is environment-values of PSGI.
 
 =head1 LICENSE
 
